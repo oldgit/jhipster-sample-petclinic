@@ -1,0 +1,46 @@
+entity Owner {
+    firstName String required maxlength(30),
+    lastName String required maxlength(30),
+    address String required maxlength(255),
+    city String required maxlength(80),
+    telephone String required pattern(/^\d{10}$/) 
+}
+
+entity Pet {
+    name String required maxlength(30),
+    birthDate LocalDate required,
+    type PetType required
+}
+
+enum PetType {
+    CAT, DOG, LIZARD, SNAKE, BIRD, HAMSTER
+}
+
+entity Visit {
+    date LocalDate required,
+    description String required maxlength(255)
+}
+
+entity Vet {
+    firstName String required maxlength(30),
+    lastName String required maxlength(30),
+}
+
+entity Specialty {
+    name String required maxlength(80)
+}
+
+relationship OneToMany {
+    Owner{pet} to Pet{owner}
+}
+
+relationship OneToMany {
+    Pet{visit} to Visit{pet}
+}
+
+relationship ManyToMany {
+  Vet{speciality} to Specialty{vet}
+}
+
+// Set pagination options
+paginate Owner, Vet with infinite-scroll
